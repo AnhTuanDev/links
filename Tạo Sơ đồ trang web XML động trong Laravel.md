@@ -1,14 +1,5 @@
 ## Tạo Sơ đồ trang web XML động trong Laravel
 
-  
-
-Đăng **4 năm trước** bởi Ryan Dhungel
-
-Thể loại: [**Laravel**](https://kaloraat.com/categories/laravel)
-
-Được xem 25810 lần
-
-Thời gian đọc ước tính: 10 phút
 
 Vậy là bạn đã xây dựng một ứng dụng web tuyệt vời bằng cách sử dụng **laravel** . Bây giờ bạn có thể tạo **Sơ đồ trang web XML động** tốt hơn **SEO** , điều này thật tuyệt. **Google** nói rằng Sử dụng sơ đồ trang web không đảm bảo rằng tất cả các mục trong sơ đồ trang web của chúng tôi sẽ được thu thập thông tin và lập chỉ mục, vì các quy trình của Google dựa vào các thuật toán phức tạp để lập lịch thu thập thông tin. Tuy nhiên, trong hầu hết các trường hợp, trang web của chúng tôi sẽ được hưởng lợi từ việc có **sơ đồ trang web** và chúng tôi sẽ không bị phạt nếu có sơ đồ đó. Vì vậy, tại sao không tạo sơ đồ trang web bằng cách sử dụng **bộ điều khiển** , **chế độ xem** và **tuyến đường** trong **laravel** và làm cho Google, **Bing** và các **rô bốt công cụ tìm kiếm** hài lòng.
 
@@ -25,7 +16,7 @@ Về cơ bản nó được làm bằng cá nhân `<url>`cho mỗi trang trong t
 
 ### Hãy xem sơ đồ trang web mẫu bên dưới:
 
-```
+```php
 <?xml version="1.0" encoding="UTF-8"?>
 
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -60,7 +51,7 @@ Tạo bộ điều khiển sơ đồ trang web
   
 Hãy tạo **bộ điều khiển** cho **sơ đồ trang web** .
 
-```
+```php
 php artisan make:controller SitemapController
 ```
 
@@ -69,7 +60,7 @@ Tạo chỉ mục sơ đồ trang web
 
 Bây giờ **bộ điều khiển sơ đồ trang web** phải trông giống như sau:
 
-```
+```php
 <?php
 
 namespace App\Http\Controllers;
@@ -86,7 +77,7 @@ class SitemapController extends Controller
 
 Hãy tạo một **phương thức** bên trong `SitemapController`lớp sẽ **tạo ra** tất cả các sơ đồ trang xml mà chúng ta cần. Chúng tôi sẽ tạo 4 sơ đồ trang cho 4 **bảng cơ sở dữ liệu** là **Bài viết** , **Danh mục** , **Câu hỏi** và **Thẻ** . Tất cả chúng sẽ được bao gồm trong một **chỉ mục sơ đồ trang web** .
 
-```
+```php
     public function index()
     {
       $articles = Article::all()->first();
@@ -107,7 +98,7 @@ Hãy tạo một **phương thức** bên trong `SitemapController`lớp sẽ **
 
 > Đảm bảo rằng bạn đã gọi các mô hình trên cùng lớp của mình như thế này:
 
-```
+```php
 use App\Article;
 use App\Category;
 use App\Question;
@@ -121,7 +112,7 @@ tục và tạo **thư mục** trong **laravel** ứng dụng **/ lượt xem / 
 
 > Thay thế `project.app:8000`với tên trang web của bạn chẳng hạn như `[mywebsite.com](http://mywebsite.com/)`
 
-```
+```php
 <?php echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
 
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -146,7 +137,7 @@ Tạo url động cho sơ đồ trang web
 
 Đi qua `SitemapController`và **tạo** nhiều **phương thức** cho từng **Bảng cơ sở dữ liệu** mà chúng tôi muốn **tạo url** để đưa vào sơ đồ trang web. Ở đây tôi đã tạo các phương thức cho **bài viết** , **danh mục** , **câu hỏi** và **thẻ** .
 
-```
+```php
    public function articles()
     {
         $articles = Article::latest()->get();
@@ -187,7 +178,7 @@ Dưới đây là cách của tôi `articles.blade.php`giống như. Tôi đã �
 
 Xin lưu ý rằng việc đặt **mức độ ưu tiên** hoặc **thay đổi tần số** cao hay thấp chỉ được thực hiện từ phía bạn. Nó là tối đa **công cụ tìm kiếm robot** để làm điều vinh dự.
 
-```
+```php
 <?php echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     @foreach ($articles as $article)
@@ -211,7 +202,7 @@ Tạo các tuyến cho sơ đồ trang web
   
 Mở ra của bạn `routes.php`tập tin và thêm các **tuyến** cho **sơ đồ trang web** .
 
-```
+```php
 Route::get('/sitemap.xml', 'SitemapController@index');
 Route::get('/sitemap.xml/articles', 'SitemapController@articles');
 Route::get('/sitemap.xml/categories', 'SitemapController@categories');
@@ -226,22 +217,18 @@ Bây giờ chúng tôi có **bộ điều khiển** và **chế độ xem** đã
 
 #### Ảnh chụp màn hình chỉ mục sơ đồ trang web
 
-![sơ đồ trang web laravel xml](https://kaloraat.com/photos/1/blogs/sitemap-index.jpg)
+![sơ đồ trang web laravel xml](./src/images/chup-man-hinh-so-do-trang-web-1.jpeg)
 
 Bạn chỉ cần gửi một url `[website.com/sitemap.xml](http://website.com/sitemap.xml)`lên google. Bạn cũng có thể đi tới **các sơ đồ trang web riêng lẻ** và tự xem danh sách các **liên kết** được tạo **động** .
 
 #### Ảnh chụp màn hình sơ đồ trang bài viết
 
-## ![hình ảnh sơ đồ trang web laravel xml](https://kaloraat.com/photos/1/blogs/sitemap-articles.jpg)
+## ![hình ảnh sơ đồ trang web laravel xml](./src/images/chup-man-hinh-so-do-trang-web-2.jpeg)
 
 ##   
 Sự kết luận
 
-  
 Trong bài viết này, chúng tôi đã học cách sử dụng **bộ điều khiển** , chế độ xem và định tuyến và thực hiện những việc theo cách chúng tôi thường làm trong **laravel** để tạo **sơ đồ trang xml động** . Phần tốt nhất của nó là chúng tôi đã tạo các sơ đồ trang web riêng lẻ cho từng **bảng cơ sở dữ liệu** và thông báo cho các công cụ tìm kiếm về url của chúng tôi sẽ **đồng bộ hóa** động.
 
 Tất cả điều này mà không cần sử dụng bất kỳ **gói của bên thứ ba** . Điều đó thật tuyệt! Tôi hy vọng bài viết này hữu ích cho bạn. Để lại **bình luận** bên dưới để **thảo luận** .
 
-___
-
-___
